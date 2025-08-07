@@ -1,0 +1,5 @@
+INSTRUMENTATION_VERSION_SCRIPT.0 {
+  global: __instrumentation*;
+  local: *; # Hide everything else.
+};
+

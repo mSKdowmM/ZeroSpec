@@ -1,0 +1,7 @@
+{
+  "dependencies": [
+    "boost-graph",
+    "fmt"
+  ],
+  "builtin-baseline": "eb0f108ebd674c6ed79acb1c2e123208c416af0d"
+}

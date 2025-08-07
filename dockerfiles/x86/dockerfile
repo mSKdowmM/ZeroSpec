@@ -1,0 +1,74 @@
+FROM ubuntu:22.04
+
+ENV DEBIAN_FRONTEND=noninteractive
+
+RUN apt-get update && apt-get install -y \
+    wget \
+    git \
+    curl \
+    ca-certificates \
+    bzip2 \
+    libglib2.0-0 \
+    libxext6 \
+    libsm6 \
+    libxrender1 \
+    sudo \
+    tar \
+    zip \
+    unzip \
+    make \
+    pkg-config \
+    vim \
+    cmake \
+    gcc\
+    g++ \
+    ninja-build \
+    numactl \
+    openmpi-bin \
+    libopenmpi-dev \
+    time \
+    python3 \
+    pip \
+    && apt-get clean && rm -rf /var/lib/apt/lists/*
+
+
+
+
+
+WORKDIR /tmp
+RUN wget https://github.com/llvm/llvm-project/archive/refs/tags/llvmorg-19.1.7.tar.gz && \
+    tar -xzf llvmorg-19.1.7.tar.gz && \
+    rm llvmorg-19.1.7.tar.gz && \
+    cd llvm-project-llvmorg-19.1.7 && \
+    mkdir build && \
+    cd build && \
+    cmake  \
+    -DLLVM_ENABLE_PROJECTS="clang;clang-tools-extra;compiler-rt;flang;openmp" \
+    -DCMAKE_INSTALL_PREFIX=/root/llvm-19.1.7 \
+    -DCMAKE_BUILD_TYPE=Release \
+    -DLLVM_BUILD_LLVM_DYLIB=ON \
+    -DLLVM_LINK_LLVM_DYLIB=ON \
+    ../llvm && \
+    make -j 32 && \
+    make install && \
+    cd /tmp && \
+    rm -rf llvm-project-llvmorg-19.1.7
+
+
+WORKDIR /opt
+RUN git clone https://github.com/microsoft/vcpkg.git && \
+    cd vcpkg && \
+    git checkout eb0f108ebd674c6ed79acb1c2e123208c416af0d && \
+    ./bootstrap-vcpkg.sh
+
+ENV PATH="/opt/vcpkg:$PATH"
+ENV VCPKG_ROOT="/opt/vcpkg"
+
+WORKDIR /workdir/zerospec
+COPY . .
+ENV LLVM_INSTALL_PREFIX=/root/llvm-19.1.7
+
+
+RUN cd sparse-passes && cmake -B build --preset release && cmake --build build
+
+CMD ["/bin/bash"]

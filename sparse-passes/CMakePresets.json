@@ -1,0 +1,31 @@
+{
+    "version": 3,
+    "configurePresets": [
+        {
+            "name": "default",
+            "hidden": true,
+            "cacheVariables": {
+                "CMAKE_TOOLCHAIN_FILE": "$env{VCPKG_ROOT}/scripts/buildsystems/vcpkg.cmake",
+                "CMAKE_MAKE_PROGRAM": "ninja",
+                "LLVM_INSTALL_PREFIX": "$env{LLVM_INSTALL_PREFIX}",
+		"CMAKE_C_COMPILER": "$env{LLVM_INSTALL_PREFIX}/bin/clang",
+		"CMAKE_CXX_COMPILER": "$env{LLVM_INSTALL_PREFIX}/bin/clang++"
+            },
+            "generator": "Ninja"
+        },
+        {
+            "name": "debug",
+            "cacheVariables": {
+                "CMAKE_BUILD_TYPE": "Debug"
+            },
+            "inherits": "default"
+        },
+        {
+            "name": "release",
+            "cacheVariables": {
+                "CMAKE_BUILD_TYPE": "Release"
+            },
+            "inherits": "default"
+        }
+    ]
+}
