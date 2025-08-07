@@ -67,7 +67,6 @@ RUN wget https://github.com/llvm/llvm-project/archive/refs/tags/llvmorg-19.1.7.t
 WORKDIR /opt
 RUN git clone https://github.com/microsoft/vcpkg.git && \
     cd vcpkg && \
-    git checkout eb0f108ebd674c6ed79acb1c2e123208c416af0d && \
     ./bootstrap-vcpkg.sh
 
 ENV PATH="/opt/vcpkg:$PATH"
