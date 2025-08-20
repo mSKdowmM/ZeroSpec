@@ -80,7 +80,7 @@ ENV LLVM_INSTALL_PREFIX=/root/llvm-19.1.7
 RUN cd sparse-passes && cmake -B build --preset release && cmake --build build
 
 WORKDIR /root
-RUN git clone https://github.com/mSKdowmM/ZeroSpec-cases-ARM.git ZeroSpec
+RUN git clone https://github.com/mSKdowmM/ZeroSpec-cases-ARM.git ZeroSpec && cd ZeroSpec && git checkout 4e09f2f8059fa70dd955dc7acd23b72a1a4f9640
 
 
 CMD ["/bin/bash"]
